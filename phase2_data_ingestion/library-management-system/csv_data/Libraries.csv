@@ -1,0 +1,4 @@
+library_id,library_name,campus_location,contact_email,phone_number
+1,Central Library,Main Campus,central@university.edu,1234567890
+2,Science Library,North Campus,science@university.edu,1234567891
+3,Law Library,South Campus,law@university.edu,1234567892
