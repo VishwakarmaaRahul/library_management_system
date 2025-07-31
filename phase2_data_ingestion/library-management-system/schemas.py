@@ -5,6 +5,11 @@ import re
 import csv
 from datetime import date , datetime
 
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models import Base, MemberORM, BookORM, AuthorORM, LibraryORM
+
 class Library(BaseModel):
     library_id : int
     library_name : str
@@ -145,7 +150,32 @@ def load_and_validate_data(members_csv, books_csv, authors_csv, library_csv ):
             logging.error(f"Library Validation Error: {row}\n{e}")
 
     return members, books, authors, libraries
+# Database connection
+DATABASE_URL = "mysql+pymysql://root:Rvsql%40123@localhost:3306/library_data_db"
 
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(bind=engine)
+
+Base.metadata.create_all(engine)
+
+def insert_data(members, books, authors, libraries):
+    session = SessionLocal()
+    try:
+        for m in members:
+            session.add(MemberORM(**m.model_dump()))
+        for b in books:
+            session.add(BookORM(**b.model_dump()))
+        for a in authors:
+            session.add(AuthorORM(**a.model_dump()))
+        for l in libraries:
+            session.add(LibraryORM(**l.model_dump()))
+        session.commit()
+        print("Data successfully inserted into MySQL.")
+    except Exception as e:
+        session.rollback()
+        print(f"Error during DB insert: {e}")
+    finally:
+        session.close()
 def main():
     members, books, authors,libraries \
         = load_and_validate_data('csv_data/Members.csv',
@@ -159,14 +189,16 @@ def main():
     print(f"Loaded {len(authors)} valid authors.")
     print(f"Loaded {len(libraries)} valid libraries.")
 
-    for member in members:
-        print(member)
-    for book in books:
-        print(book)
-    for author in authors:
-        print(author)
-    for library in libraries:
-        print(library)
+    # for member in members:
+    #     print(member)
+    # for book in books:
+    #     print(book)
+    # for author in authors:
+    #     print(author)
+    # for library in libraries:
+    #     print(library)
+
+    insert_data(members, books, authors, libraries)
 
 if __name__ == '__main__':
     main()

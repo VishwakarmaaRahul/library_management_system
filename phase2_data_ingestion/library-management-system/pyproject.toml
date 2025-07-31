@@ -8,6 +8,8 @@ dependencies = [
     "pandas>=2.3.1",
     "phonenumbers>=9.0.10",
     "pydantic[email]>=2.11.7",
+    "pymysql>=1.1.1",
+    "sqlalchemy>=2.0.42",
 ]
 
 [dependency-groups]
