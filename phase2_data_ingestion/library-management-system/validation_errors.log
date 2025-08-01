@@ -1,0 +1,299 @@
+2025-08-01 11:52:25,929 - ERROR - Book Validation Error: {'book_id': 7, 'title': 'Constitutional Law', 'isbn': '9780198765865', 'publication_date': datetime.date(2015, 5, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780198765865', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 11:52:25,929 - ERROR - Book Validation Error: {'book_id': 8, 'title': 'Criminal Law', 'isbn': '9780198852695', 'publication_date': datetime.date(2019, 6, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780198852695', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 11:52:25,929 - ERROR - Book Validation Error: {'book_id': 9, 'title': 'Law and Society', 'isbn': '9780130253264', 'publication_date': datetime.date(2002, 3, 1), 'total_copies': 3, 'available_copies': 3, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780130253264', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 11:52:25,929 - ERROR - Book Validation Error: {'book_id': 10, 'title': 'Artificial Intelligence', 'isbn': '9780136042597', 'publication_date': datetime.date(2009, 2, 1), 'total_copies': 4, 'available_copies': 4, 'library_id': '1'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780136042597', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 11:52:25,929 - ERROR - Book Validation Error: {'book_id': 14, 'title': 'Organic Chemistry', 'isbn': '9780321803222', 'publication_date': datetime.date(2013, 1, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '2'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780321803222', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 11:52:25,929 - ERROR - Book Validation Error: {'book_id': 15, 'title': 'Environmental Law', 'isbn': '9780199577515', 'publication_date': datetime.date(2011, 4, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780199577515', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 11:52:25,929 - INFO - Validated 20 members, 9 books, 8 authors, 3 libraries.
+2025-08-01 11:52:25,929 - INFO - Total members processed: 20
+2025-08-01 11:52:25,929 - INFO - Total books processed: 9
+2025-08-01 11:52:25,929 - INFO - Total authors processed:8
+2025-08-01 11:52:25,929 - INFO - Total libraries processed:3
+2025-08-01 11:52:25,973 - INFO - Data successfully committed to the database.
+2025-08-01 11:52:25,973 - INFO - ========== Summary Report ==========
+2025-08-01 11:52:25,973 - INFO - Members inserted: 20
+2025-08-01 11:52:25,973 - INFO - Members duplicates skipped: 0
+2025-08-01 11:52:25,973 - INFO - Members errors: 0
+2025-08-01 11:52:25,973 - INFO - Books inserted: 9
+2025-08-01 11:52:25,973 - INFO - Books duplicates skipped: 0
+2025-08-01 11:52:25,973 - INFO - Books errors: 0
+2025-08-01 11:52:25,973 - INFO - Authors inserted: 8
+2025-08-01 11:52:25,973 - INFO - Authors duplicates skipped: 0
+2025-08-01 11:52:25,973 - INFO - Authors errors: 0
+2025-08-01 11:52:25,973 - INFO - Libraries inserted: 3
+2025-08-01 11:52:25,973 - INFO - Libraries duplicates skipped: 0
+2025-08-01 11:52:25,973 - INFO - Libraries errors: 0
+2025-08-01 11:52:25,973 - INFO - ====================================
+2025-08-01 12:06:14,466 - INFO - Read 20 rows from Members.csv
+2025-08-01 12:06:14,466 - INFO - Read 15 rows from Books.csv
+2025-08-01 12:06:14,466 - INFO - Read 8 rows from Authors.csv
+2025-08-01 12:06:14,466 - INFO - Read 3 rows from Libraries.csv
+2025-08-01 12:06:14,466 - ERROR - Book Validation Error: {'book_id': 7, 'title': 'Constitutional Law', 'isbn': '9780198765865', 'publication_date': datetime.date(2015, 5, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780198765865', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:06:14,466 - ERROR - Book Validation Error: {'book_id': 8, 'title': 'Criminal Law', 'isbn': '9780198852695', 'publication_date': datetime.date(2019, 6, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780198852695', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:06:14,466 - ERROR - Book Validation Error: {'book_id': 9, 'title': 'Law and Society', 'isbn': '9780130253264', 'publication_date': datetime.date(2002, 3, 1), 'total_copies': 3, 'available_copies': 3, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780130253264', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:06:14,466 - ERROR - Book Validation Error: {'book_id': 10, 'title': 'Artificial Intelligence', 'isbn': '9780136042597', 'publication_date': datetime.date(2009, 2, 1), 'total_copies': 4, 'available_copies': 4, 'library_id': '1'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780136042597', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:06:14,466 - ERROR - Book Validation Error: {'book_id': 14, 'title': 'Organic Chemistry', 'isbn': '9780321803222', 'publication_date': datetime.date(2013, 1, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '2'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780321803222', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:06:14,466 - ERROR - Book Validation Error: {'book_id': 15, 'title': 'Environmental Law', 'isbn': '9780199577515', 'publication_date': datetime.date(2011, 4, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780199577515', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:06:14,466 - INFO - Validated members: 20 / 20
+2025-08-01 12:06:14,466 - INFO - Validated books: 9 / 15
+2025-08-01 12:06:14,466 - INFO - Validated authors: 8 / 8
+2025-08-01 12:06:14,466 - INFO - Validated libraries: 3 / 3
+2025-08-01 12:06:14,498 - INFO - Data successfully committed to the database.
+2025-08-01 12:06:14,498 - INFO - ========== Summary Report ==========
+2025-08-01 12:06:14,498 - INFO - Members inserted: 20
+2025-08-01 12:06:14,498 - INFO - Members duplicates skipped: 0
+2025-08-01 12:06:14,498 - INFO - Members errors: 0
+2025-08-01 12:06:14,498 - INFO - Books inserted: 9
+2025-08-01 12:06:14,498 - INFO - Books duplicates skipped: 0
+2025-08-01 12:06:14,498 - INFO - Books errors: 0
+2025-08-01 12:06:14,498 - INFO - Authors inserted: 8
+2025-08-01 12:06:14,498 - INFO - Authors duplicates skipped: 0
+2025-08-01 12:06:14,498 - INFO - Authors errors: 0
+2025-08-01 12:06:14,498 - INFO - Libraries inserted: 3
+2025-08-01 12:06:14,498 - INFO - Libraries duplicates skipped: 0
+2025-08-01 12:06:14,498 - INFO - Libraries errors: 0
+2025-08-01 12:06:14,498 - INFO - ====================================
+2025-08-01 12:28:06,927 - INFO - Read 20 rows from Members.csv
+2025-08-01 12:28:06,927 - INFO - Read 15 rows from Books.csv
+2025-08-01 12:28:06,927 - INFO - Read 8 rows from Authors.csv
+2025-08-01 12:28:06,927 - INFO - Read 3 rows from Libraries.csv
+2025-08-01 12:28:06,942 - ERROR - Book Validation Error: {'book_id': 7, 'title': 'Constitutional Law', 'isbn': '9780198765865', 'publication_date': datetime.date(2015, 5, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780198765865', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:28:06,942 - ERROR - Book Validation Error: {'book_id': 8, 'title': 'Criminal Law', 'isbn': '9780198852695', 'publication_date': datetime.date(2019, 6, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780198852695', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:28:06,942 - ERROR - Book Validation Error: {'book_id': 9, 'title': 'Law and Society', 'isbn': '9780130253264', 'publication_date': datetime.date(2002, 3, 1), 'total_copies': 3, 'available_copies': 3, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780130253264', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:28:06,942 - ERROR - Book Validation Error: {'book_id': 10, 'title': 'Artificial Intelligence', 'isbn': '9780136042597', 'publication_date': datetime.date(2009, 2, 1), 'total_copies': 4, 'available_copies': 4, 'library_id': '1'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780136042597', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:28:06,942 - ERROR - Book Validation Error: {'book_id': 14, 'title': 'Organic Chemistry', 'isbn': '9780321803222', 'publication_date': datetime.date(2013, 1, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '2'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780321803222', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:28:06,942 - ERROR - Book Validation Error: {'book_id': 15, 'title': 'Environmental Law', 'isbn': '9780199577515', 'publication_date': datetime.date(2011, 4, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780199577515', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:28:06,942 - INFO - Validated members: 20 / 20
+2025-08-01 12:28:06,942 - INFO - Validated books: 9 / 15
+2025-08-01 12:28:06,942 - INFO - Validated authors: 8 / 8
+2025-08-01 12:28:06,942 - INFO - Validated libraries: 3 / 3
+2025-08-01 12:28:06,984 - INFO - Data successfully committed to the database.
+2025-08-01 12:28:06,984 - INFO - ========== Summary Report ==========
+2025-08-01 12:28:06,984 - INFO - Members inserted: 20
+2025-08-01 12:28:06,984 - INFO - Members duplicates skipped: 0
+2025-08-01 12:28:06,984 - INFO - Members errors: 0
+2025-08-01 12:28:06,984 - INFO - Books inserted: 9
+2025-08-01 12:28:06,984 - INFO - Books duplicates skipped: 0
+2025-08-01 12:28:06,984 - INFO - Books errors: 0
+2025-08-01 12:28:06,984 - INFO - Authors inserted: 8
+2025-08-01 12:28:06,984 - INFO - Authors duplicates skipped: 0
+2025-08-01 12:28:06,984 - INFO - Authors errors: 0
+2025-08-01 12:28:06,984 - INFO - Libraries inserted: 3
+2025-08-01 12:28:06,984 - INFO - Libraries duplicates skipped: 0
+2025-08-01 12:28:06,984 - INFO - Libraries errors: 0
+2025-08-01 12:28:06,984 - INFO - ====================================
+2025-08-01 12:30:10,074 - ERROR - Book Validation Error: {'book_id': 7, 'title': 'Constitutional Law', 'isbn': '9780198765865', 'publication_date': datetime.date(2015, 5, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780198765865', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:30:10,074 - ERROR - Book Validation Error: {'book_id': 8, 'title': 'Criminal Law', 'isbn': '9780198852695', 'publication_date': datetime.date(2019, 6, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780198852695', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:30:10,074 - ERROR - Book Validation Error: {'book_id': 9, 'title': 'Law and Society', 'isbn': '9780130253264', 'publication_date': datetime.date(2002, 3, 1), 'total_copies': 3, 'available_copies': 3, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780130253264', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:30:10,074 - ERROR - Book Validation Error: {'book_id': 10, 'title': 'Artificial Intelligence', 'isbn': '9780136042597', 'publication_date': datetime.date(2009, 2, 1), 'total_copies': 4, 'available_copies': 4, 'library_id': '1'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780136042597', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:30:10,074 - ERROR - Book Validation Error: {'book_id': 14, 'title': 'Organic Chemistry', 'isbn': '9780321803222', 'publication_date': datetime.date(2013, 1, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '2'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780321803222', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:30:10,074 - ERROR - Book Validation Error: {'book_id': 15, 'title': 'Environmental Law', 'isbn': '9780199577515', 'publication_date': datetime.date(2011, 4, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780199577515', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:30:10,089 - ERROR - Unexpected error during DB insert: (pymysql.err.IntegrityError) (1062, "Duplicate entry '1' for key 'authors.PRIMARY'")
+[SQL: INSERT INTO authors (author_id, first_name, last_name, birth_date, nationality, biography) VALUES (%(author_id)s, %(first_name)s, %(last_name)s, %(birth_date)s, %(nationality)s, %(biography)s)]
+[parameters: [{'author_id': 1, 'first_name': 'Thomas', 'last_name': 'Cormen', 'birth_date': datetime.date(1956, 1, 1), 'nationality': 'American', 'biography': 'Co-author of Introduction to Algorithms'}, {'author_id': 2, 'first_name': 'Robert', 'last_name': 'Martin', 'birth_date': datetime.date(1952, 12, 5), 'nationality': 'American', 'biography': 'Known for Clean Code'}, {'author_id': 3, 'first_name': 'Erich', 'last_name': 'Gamma', 'birth_date': datetime.date(1961, 3, 13), 'nationality': 'Swiss', 'biography': 'Co-author of Design Patterns'}, {'author_id': 4, 'first_name': 'Stephen', 'last_name': 'Hawking', 'birth_date': datetime.date(1942, 1, 8), 'nationality': 'British', 'biography': 'Author of A Brief History of Time'}, {'author_id': 5, 'first_name': 'Richard', 'last_name': 'Dawkins', 'birth_date': datetime.date(1941, 3, 26), 'nationality': 'British', 'biography': 'Author of The Selfish Gene'}, {'author_id': 6, 'first_name': 'Charles', 'last_name': 'Darwin', 'birth_date': datetime.date(1809, 2, 12), 'nationality': 'British', 'biography': 'Father of evolutionary biology'}, {'author_id': 7, 'first_name': 'John', 'last_name': 'Smith', 'birth_date': datetime.date(1975, 6, 10), 'nationality': 'American', 'biography': 'Expert in constitutional law'}, {'author_id': 8, 'first_name': 'Jane', 'last_name': 'Doe', 'birth_date': datetime.date(1980, 4, 25), 'nationality': 'Canadian', 'biography': 'Environmentalist and author'}]]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-08-01 12:48:23,925 - INFO - Read 20 rows from Members.csv
+2025-08-01 12:48:23,925 - INFO - Read 15 rows from Books.csv
+2025-08-01 12:48:23,925 - INFO - Read 8 rows from Authors.csv
+2025-08-01 12:48:23,925 - INFO - Read 3 rows from Libraries.csv
+2025-08-01 12:48:23,940 - ERROR - Book Validation Error: {'book_id': 7, 'title': 'Constitutional Law', 'isbn': '9780198765865', 'publication_date': datetime.date(2015, 5, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780198765865', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:48:23,940 - ERROR - Book Validation Error: {'book_id': 8, 'title': 'Criminal Law', 'isbn': '9780198852695', 'publication_date': datetime.date(2019, 6, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780198852695', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:48:23,940 - ERROR - Book Validation Error: {'book_id': 9, 'title': 'Law and Society', 'isbn': '9780130253264', 'publication_date': datetime.date(2002, 3, 1), 'total_copies': 3, 'available_copies': 3, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780130253264', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:48:23,940 - ERROR - Book Validation Error: {'book_id': 10, 'title': 'Artificial Intelligence', 'isbn': '9780136042597', 'publication_date': datetime.date(2009, 2, 1), 'total_copies': 4, 'available_copies': 4, 'library_id': '1'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780136042597', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:48:23,940 - ERROR - Book Validation Error: {'book_id': 14, 'title': 'Organic Chemistry', 'isbn': '9780321803222', 'publication_date': datetime.date(2013, 1, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '2'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780321803222', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:48:23,940 - ERROR - Book Validation Error: {'book_id': 15, 'title': 'Environmental Law', 'isbn': '9780199577515', 'publication_date': datetime.date(2011, 4, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780199577515', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 12:48:23,940 - INFO - Validated members: 20 / 20
+2025-08-01 12:48:23,940 - INFO - Validated books: 9 / 15
+2025-08-01 12:48:23,940 - INFO - Validated authors: 8 / 8
+2025-08-01 12:48:23,940 - INFO - Validated libraries: 3 / 3
+2025-08-01 12:48:23,973 - INFO - Data successfully committed to the database.
+2025-08-01 12:48:23,973 - INFO - ========== Summary Report ==========
+2025-08-01 12:48:23,973 - INFO - Members inserted: 20
+2025-08-01 12:48:23,973 - INFO - Members duplicates skipped: 0
+2025-08-01 12:48:23,973 - INFO - Members errors: 0
+2025-08-01 12:48:23,973 - INFO - Books inserted: 9
+2025-08-01 12:48:23,973 - INFO - Books duplicates skipped: 0
+2025-08-01 12:48:23,973 - INFO - Books errors: 0
+2025-08-01 12:48:23,973 - INFO - Authors inserted: 8
+2025-08-01 12:48:23,973 - INFO - Authors duplicates skipped: 0
+2025-08-01 12:48:23,973 - INFO - Authors errors: 0
+2025-08-01 12:48:23,973 - INFO - Libraries inserted: 3
+2025-08-01 12:48:23,973 - INFO - Libraries duplicates skipped: 0
+2025-08-01 12:48:23,973 - INFO - Libraries errors: 0
+2025-08-01 12:48:23,973 - INFO - ====================================
+2025-08-01 16:42:24,502 - INFO - Read 20 rows from Members.csv
+2025-08-01 16:42:24,502 - INFO - Read 15 rows from Books.csv
+2025-08-01 16:42:24,502 - INFO - Read 8 rows from Authors.csv
+2025-08-01 16:42:24,502 - INFO - Read 3 rows from Libraries.csv
+2025-08-01 16:42:24,524 - ERROR - Book Validation Error: {'book_id': 7, 'title': 'Constitutional Law', 'isbn': '9780198765865', 'publication_date': datetime.date(2015, 5, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780198765865', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 16:42:24,524 - ERROR - Book Validation Error: {'book_id': 8, 'title': 'Criminal Law', 'isbn': '9780198852695', 'publication_date': datetime.date(2019, 6, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780198852695', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 16:42:24,525 - ERROR - Book Validation Error: {'book_id': 9, 'title': 'Law and Society', 'isbn': '9780130253264', 'publication_date': datetime.date(2002, 3, 1), 'total_copies': 3, 'available_copies': 3, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780130253264', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 16:42:24,525 - ERROR - Book Validation Error: {'book_id': 10, 'title': 'Artificial Intelligence', 'isbn': '9780136042597', 'publication_date': datetime.date(2009, 2, 1), 'total_copies': 4, 'available_copies': 4, 'library_id': '1'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780136042597', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 16:42:24,525 - ERROR - Book Validation Error: {'book_id': 14, 'title': 'Organic Chemistry', 'isbn': '9780321803222', 'publication_date': datetime.date(2013, 1, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '2'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780321803222', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 16:42:24,525 - ERROR - Book Validation Error: {'book_id': 15, 'title': 'Environmental Law', 'isbn': '9780199577515', 'publication_date': datetime.date(2011, 4, 1), 'total_copies': 2, 'available_copies': 2, 'library_id': '3'}
+1 validation error for Book
+isbn
+  Value error, Invalid ISBN-13 checksum [type=value_error, input_value='9780199577515', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-01 16:42:24,525 - INFO - Validated members: 20 / 20
+2025-08-01 16:42:24,525 - INFO - Validated books: 9 / 15
+2025-08-01 16:42:24,525 - INFO - Validated authors: 8 / 8
+2025-08-01 16:42:24,525 - INFO - Validated libraries: 3 / 3
+2025-08-01 16:42:24,586 - ERROR - Unexpected error during DB insert: (pymysql.err.IntegrityError) (1062, "Duplicate entry '1' for key 'authors.PRIMARY'")
+[SQL: INSERT INTO authors (author_id, first_name, last_name, birth_date, nationality, biography) VALUES (%(author_id)s, %(first_name)s, %(last_name)s, %(birth_date)s, %(nationality)s, %(biography)s)]
+[parameters: [{'author_id': 1, 'first_name': 'Thomas', 'last_name': 'Cormen', 'birth_date': datetime.date(1956, 1, 1), 'nationality': 'American', 'biography': 'Co-author of Introduction to Algorithms'}, {'author_id': 2, 'first_name': 'Robert', 'last_name': 'Martin', 'birth_date': datetime.date(1952, 12, 5), 'nationality': 'American', 'biography': 'Known for Clean Code'}, {'author_id': 3, 'first_name': 'Erich', 'last_name': 'Gamma', 'birth_date': datetime.date(1961, 3, 13), 'nationality': 'Swiss', 'biography': 'Co-author of Design Patterns'}, {'author_id': 4, 'first_name': 'Stephen', 'last_name': 'Hawking', 'birth_date': datetime.date(1942, 1, 8), 'nationality': 'British', 'biography': 'Author of A Brief History of Time'}, {'author_id': 5, 'first_name': 'Richard', 'last_name': 'Dawkins', 'birth_date': datetime.date(1941, 3, 26), 'nationality': 'British', 'biography': 'Author of The Selfish Gene'}, {'author_id': 6, 'first_name': 'Charles', 'last_name': 'Darwin', 'birth_date': datetime.date(1809, 2, 12), 'nationality': 'British', 'biography': 'Father of evolutionary biology'}, {'author_id': 7, 'first_name': 'John', 'last_name': 'Smith', 'birth_date': datetime.date(1975, 6, 10), 'nationality': 'American', 'biography': 'Expert in constitutional law'}, {'author_id': 8, 'first_name': 'Jane', 'last_name': 'Doe', 'birth_date': datetime.date(1980, 4, 25), 'nationality': 'Canadian', 'biography': 'Environmentalist and author'}]]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-08-01 16:42:24,586 - INFO - ========== Summary Report ==========
+2025-08-01 16:42:24,586 - INFO - Members inserted: 20
+2025-08-01 16:42:24,586 - INFO - Members duplicates skipped: 0
+2025-08-01 16:42:24,586 - INFO - Members errors: 0
+2025-08-01 16:42:24,586 - INFO - Books inserted: 9
+2025-08-01 16:42:24,586 - INFO - Books duplicates skipped: 0
+2025-08-01 16:42:24,586 - INFO - Books errors: 0
+2025-08-01 16:42:24,586 - INFO - Authors inserted: 8
+2025-08-01 16:42:24,586 - INFO - Authors duplicates skipped: 0
+2025-08-01 16:42:24,587 - INFO - Authors errors: 0
+2025-08-01 16:42:24,587 - INFO - Libraries inserted: 3
+2025-08-01 16:42:24,587 - INFO - Libraries duplicates skipped: 0
+2025-08-01 16:42:24,587 - INFO - Libraries errors: 0
+2025-08-01 16:42:24,587 - INFO - ====================================
