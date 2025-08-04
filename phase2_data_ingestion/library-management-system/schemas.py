@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, MemberORM, BookORM, AuthorORM, LibraryORM
+from models import Base, MemberORM, Books, AuthorORM, LibraryORM
 
 class Library(BaseModel):
     library_id : int
@@ -30,12 +30,10 @@ class Library(BaseModel):
 
 class Book(BaseModel):
     """This is the book class and validating ISBN """
-    book_id : int
+    # book_id : int
     title : str
-    publication_date : date
-    total_copies : int
-    available_copies : int
     isbn : str
+    published_date: date
 
     @field_validator('isbn')
     def isbn_validator(cls, v):
@@ -52,6 +50,35 @@ class Book(BaseModel):
             return isbn
         else:
             raise ValueError('ISBN must be 10 digits long')
+
+    @classmethod
+    def from_api(cls, book_data: dict) -> "Book":
+        """
+        Parses API response into a validated Book model.
+        """
+        try:
+            title = book_data.get("title", "Unknown Title")
+            isbn_list = book_data.get("isbn_13") or book_data.get("isbn_10") or []
+            if not isbn_list:
+                raise ValueError("No ISBN found in book data")
+
+            isbn = isbn_list[0]
+            pub_date_str = book_data.get("published_date", "2000-01-01")
+            try:
+                published_date = datetime.strptime(pub_date_str, "%B %d, %Y").date()
+            except ValueError:
+                try:
+                    published_date = datetime.strptime(pub_date_str, "%Y-%m-%d").date()
+                except ValueError:
+                    published_date = date(2000, 1, 1)  # fallback
+
+            return cls(
+                title=title,
+                isbn=isbn,
+                published_date=published_date,
+            )
+        except Exception as e:
+            raise ValueError(f"from_api: {e}")
 
 class Members(BaseModel):
     member_id : int
@@ -137,8 +164,7 @@ def load_and_validate_data(members_csv, books_csv, authors_csv, library_csv ):
         try:
             row['book_id'] = int(row['book_id'])
             row['total_copies'] = int(row['total_copies'])
-            row['available_copies'] = int(row['available_copies'])
-            row['publication_date'] = date.fromisoformat(row['publication_date'])
+            row['published_date'] = date.fromisoformat(row['published_date'])
             book = Book(**row)
             books.append(book)
         except ValidationError as e:
@@ -202,16 +228,16 @@ def insert_data(members, books, authors, libraries, engine):
 
         for b in books:
             try:
-                session.add(BookORM(**b.model_dump()))
+                session.add(Books(**b.model_dump()))
                 inserted["books"] += 1
             except IntegrityError:
                 session.rollback()
                 duplicates["books"] += 1
-                logging.warning(f"Duplicate Book skipped: {b.book_id}")
+                logging.warning(f"Duplicate Book skipped: {b.title}")
             except Exception as e:
                 session.rollback()
                 errors["books"] += 1
-                logging.error(f"Error inserting book {b.book_id}: {e}")
+                logging.error(f"Error inserting book {b.title}: {e}")
 
         for a in authors:
             try:
@@ -260,13 +286,37 @@ def insert_data(members, books, authors, libraries, engine):
     logging.info("====================================")
 
 
+def insert_book_if_not_exists(session, book_model: BaseModel):
+    """
+    Inserts a new book into the database if a book with the same title and author doesn't already exist.
+    """
+    existing = session.query(Books).filter_by(
+        title=book_model.title,
+    ).first()
 
+    if not existing:
+        new_book = Books(**book_model.model_dump())
+        session.add(new_book)
+        try:
+            session.commit()
+        except IntegrityError:
+            session.rollback()
+
+
+def get_session(db_url: str):
+    """
+    Creates a SQLAlchemy session using the provided database URL.
+    """
+    engine = create_engine(db_url)
+    Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine)
+    return Session()
 
 # def main():
     # print("Hello from main")
     # members, books, authors,libraries \
     #     = load_and_validate_data('csv_data/Members.csv',
-    #                              'csv_data/Books.csv',
+    #                              'csv_data/BooksOLD.csv',
     #                              'csv_data/Authors.csv',
     #                              'csv_data/Libraries.csv')
 

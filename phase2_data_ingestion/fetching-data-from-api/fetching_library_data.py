@@ -59,33 +59,33 @@ from bs4 import BeautifulSoup
 #         soup = BeautifulSoup(response.text, 'html.parser')
 #         print(soup.prettify())
 
-
-import requests
-from bs4 import BeautifulSoup
-
-url = "https://openlibrary.org/search/authors.json?q=Rabindranath Tagore"
-r = requests.get(url)
-data = r.json()
-
-for index, author in enumerate(data.get("docs", [])[:3], 1):
-    print(f"\nAuthor #{index}")
-
-    for key, value in author.items():
-        print(f"{key}: {value}")
-
-    # Get author key and fetch author details
-    author_key = author.get("key")  # e.g., "OL1770A"
-
-    if author_key:
-        detail_url = f"https://openlibrary.org/authors/{author_key}.json"
-        response = requests.get(detail_url)
-
-        if response.status_code == 200:
-            author_data = response.json()
-            print("\nAuthor JSON data from detailed endpoint:")
-            print(author_data)
-        else:
-            print(f"Failed to fetch details for {author_key}")
+#
+# import requests
+# from bs4 import BeautifulSoup
+#
+# url = "https://openlibrary.org/search/authors.json?q=Rabindranath Tagore"
+# r = requests.get(url)
+# data = r.json()
+#
+# for index, author in enumerate(data.get("docs", [])[:3], 1):
+#     print(f"\nAuthor #{index}")
+#
+#     for key, value in author.items():
+#         print(f"{key}: {value}")
+#
+#     # Get author key and fetch author details
+#     author_key = author.get("key")  # e.g., "OL1770A"
+#
+#     if author_key:
+#         detail_url = f"https://openlibrary.org/authors/{author_key}.json"
+#         response = requests.get(detail_url)
+#
+#         if response.status_code == 200:
+#             author_data = response.json()
+#             print("\nAuthor JSON data from detailed endpoint:")
+#             print(author_data)
+#         else:
+#             print(f"Failed to fetch details for {author_key}")
 
 #
 # print(author_data["key"])
@@ -167,13 +167,13 @@ headers = {
 response = requests.get(url, headers=headers)
 data = response.json()
 
-# print(data)
-print(f"Book Key: {data.get('key')}")
-print(f"Title: {data.get('title')}")
-print(f"Author: {data.get('authors')}")
-print(f"Publish Date: {data.get('publish_date', 'Unknown')}")
-print(f"ISBN_10: {data.get('isbn_10')}")
-print(f"ISBN_13: {data.get('isbn_13')}")
-print(f"Description: {data.get('description', {}).get('value', 'No description available')}")
+print(data)
+# print(f"Book Key: {data.get('key')}")
+# print(f"Title: {data.get('title')}")
+# print(f"Author: {data.get('authors')}")
+# print(f"Publish Date: {data.get('publish_date', 'Unknown')}")
+# print(f"ISBN_10: {data.get('isbn_10')}")
+# print(f"ISBN_13: {data.get('isbn_13')}")
+# print(f"Description: {data.get('description', {}).get('value', 'No description available')}")
 # print(json.dumps(data, indent=2))
 

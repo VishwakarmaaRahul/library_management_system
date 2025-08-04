@@ -27,7 +27,7 @@ def main():
     try:
         members, books, authors, libraries = load_and_validate_data(
             os.path.join(args.directory, "Members.csv"),
-            os.path.join(args.directory, "Books.csv"),
+            os.path.join(args.directory, "BooksOLD.csv"),
             os.path.join(args.directory, "Authors.csv"),
             os.path.join(args.directory, "Libraries.csv")
         )

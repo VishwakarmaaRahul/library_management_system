@@ -11,14 +11,15 @@ class LibraryORM(Base):
     contact_email = Column(String(100))
     phone_number = Column(String(20))
 
-class BookORM(Base):
+class Books(Base):
     __tablename__ = 'books'
-    book_id = Column(Integer, primary_key=True)
-    title = Column(String(200))
-    publication_date = Column(Date)
-    total_copies = Column(Integer)
-    available_copies = Column(Integer)
-    isbn = Column(String(20))
+    # book_id = Column(Integer, primary_key=True)
+    title = Column(String(200),primary_key=True)
+
+    # total_copies = Column(Integer)
+    # available_copies = Column(Integer)
+    isbn = Column(String(20), unique=True, nullable=True)
+    published_date = Column(Date)
 
 class MemberORM(Base):
     __tablename__ = 'members'
@@ -38,3 +39,4 @@ class AuthorORM(Base):
     birth_date = Column(Date)
     nationality = Column(String(100))
     biography = Column(String(1000))
+
