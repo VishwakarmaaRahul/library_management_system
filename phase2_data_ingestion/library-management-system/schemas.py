@@ -1,3 +1,4 @@
+from enum import Enum
 from pydantic import BaseModel, EmailStr, field_validator,ValidationError
 import phonenumbers
 import logging
@@ -79,6 +80,9 @@ class Book(BaseModel):
             )
         except Exception as e:
             raise ValueError(f"from_api: {e}")
+class MemberType(str, Enum):
+    student = 'student'
+    faculty = 'faculty'
 
 class Members(BaseModel):
     member_id : int
@@ -86,7 +90,7 @@ class Members(BaseModel):
     last_name : str
     email : EmailStr
     phone_number : str
-    member_type : str
+    member_type : MemberType
     registration_date : date
 
 
@@ -95,7 +99,7 @@ class Members(BaseModel):
         try:
             parsed = phonenumbers.parse(v,"IN")
             if not phonenumbers.is_valid_number(parsed):
-                raise ValueError ("Phone Number is not vallid")
+                raise ValueError ("Phone Number is not valid")
             return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)
         except phonenumbers.NumberParseException:
             raise ValueError("Could not parse phone number")
