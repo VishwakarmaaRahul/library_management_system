@@ -34,6 +34,7 @@ class OpenLibraryAPIClient:
         response = requests.get(url, timeout=10)
         response.raise_for_status()
         data = response.json()
+        # print(data)
 
         editions = data.get("entries", [])
         if editions:
@@ -46,7 +47,7 @@ class OpenLibraryAPIClient:
         response.raise_for_status()
         data = response.json()
 
-        # print(f"Full Book Details for {edition_key}:")
-        # print(json.dumps(data, indent=2))
+        print(f"Full Book Details for {edition_key}:")
+        print(json.dumps(data, indent=2))
 
         return data

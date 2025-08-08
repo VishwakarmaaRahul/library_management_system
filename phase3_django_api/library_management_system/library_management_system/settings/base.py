@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'database_connections',
-    'books',
+    # 'books',
+    'libraries_database',
 ]
 
 MIDDLEWARE = [
@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'library_management_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'libraryDB',
+        'NAME': 'library_database_django',
         'USER': 'root',
         'PASSWORD': 'Rvsql@123',
         'HOST': 'localhost',

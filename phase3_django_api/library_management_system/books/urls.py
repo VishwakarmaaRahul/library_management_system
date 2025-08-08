@@ -3,7 +3,9 @@ from . import views
 
 
 urlpatterns = [
-    path('',views.books),
+    path('books/',views.books , name = 'books'),
+    path('libraries/',views.libraries,name = 'library'),
+    # path('',views.members),
 ]
 # Create your views here.
 

@@ -166,8 +166,8 @@ def load_and_validate_data(members_csv, books_csv, authors_csv, library_csv ):
 
     for row in load_csv(books_csv):
         try:
-            row['book_id'] = int(row['book_id'])
-            row['total_copies'] = int(row['total_copies'])
+            # row['book_id'] = int(row['book_id'])
+            # row['title'] = int(row['title'])
             row['published_date'] = date.fromisoformat(row['published_date'])
             book = Book(**row)
             books.append(book)
@@ -316,32 +316,5 @@ def get_session(db_url: str):
     Session = sessionmaker(bind=engine)
     return Session()
 
-# def main():
-    # print("Hello from main")
-    # members, books, authors,libraries \
-    #     = load_and_validate_data('csv_data/Members.csv',
-    #                              'csv_data/BooksOLD.csv',
-    #                              'csv_data/Authors.csv',
-    #                              'csv_data/Libraries.csv')
-
-
-    # print(f"Loaded {len(members)} valid members.")
-    # print(f"Loaded {len(books)} valid books.")
-    # print(f"Loaded {len(authors)} valid authors.")
-    # print(f"Loaded {len(libraries)} valid libraries.")
-    #
-    # for member in members:
-    #     print(member)
-    # for book in books:
-    #     print(book)
-    # for author in authors:
-    #     print(author)
-    # for library in libraries:
-    #     print(library)
-
-    # insert_data(members, books, authors, libraries)
-
-# if __name__ == '__main__':
-#     main()
 
 
