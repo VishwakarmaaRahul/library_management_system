@@ -86,6 +86,10 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'libraries_database.utils.exception_handler.custom_exception_handler',
+    # other DRF settings if you have
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
