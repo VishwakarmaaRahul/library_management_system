@@ -26,7 +26,6 @@ class HelloWorldView(APIView):
 urlpatterns = [
 
     path('', HelloWorldView.as_view()),
-    path('',include('books.urls')),
     path('api/', include('libraries_database.urls')),
 
     # Add other API URLs here

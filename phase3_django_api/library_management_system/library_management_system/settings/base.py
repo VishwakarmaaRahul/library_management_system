@@ -89,6 +89,9 @@ DATABASES = {
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'libraries_database.utils.exception_handler.custom_exception_handler',
     # other DRF settings if you have
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
 }
 
 # Password validation

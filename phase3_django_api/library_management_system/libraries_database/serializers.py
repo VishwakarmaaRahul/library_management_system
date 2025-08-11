@@ -26,9 +26,37 @@ class LibrarySerializer(serializers.ModelSerializer):
 
 
 class BookSerializer(serializers.ModelSerializer):
+    authors = serializers.PrimaryKeyRelatedField(
+        queryset=Author.objects.all(), many=True, write_only=True, required=False
+    )
+    categories = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(), many=True, write_only=True, required=False
+    )
     class Meta:
         model = Book
         fields = '__all__'
+
+    def update(self, instance, validated_data):
+        authors = validated_data.pop('authors', None)
+        categories = validated_data.pop('categories', None)
+
+        # Update regular fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # Update ManyToMany through relationships
+        if authors is not None:
+            instance.authors.clear()
+            for author in authors:
+                BookAuthor.objects.create(book=instance, author=author)
+
+        if categories is not None:
+            instance.categories.clear()
+            for category in categories:
+                BookCategory.objects.create(book=instance, category=category)
+
+        return instance
 
     def validate_isbn(self, value):
         isbn = value.replace('-', '').upper()
