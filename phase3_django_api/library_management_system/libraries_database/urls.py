@@ -1,5 +1,3 @@
-from atexit import register
-
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from .views import *
@@ -17,4 +15,7 @@ router.register(r'bookcategories', BookCategoryViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+ path('api/members/<int:member_id>/borrowings/', MemberBorrowingHistoryView.as_view(), name='member-borrowings'),
+    path('statistics/', StatisticsView.as_view(), name='library-statistics'),
+
 ]

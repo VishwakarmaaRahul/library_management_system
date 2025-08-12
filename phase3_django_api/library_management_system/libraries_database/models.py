@@ -32,6 +32,8 @@ class Book(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
+
     def average_rating(self):
         avg = self.review_set.aggregate(Avg('rating'))['rating__avg']
         if avg is not None:
@@ -179,4 +181,3 @@ class BookCategory(models.Model):
 
     def __str__(self):
         return f"{self.book.title} - {self.category.category}"
-

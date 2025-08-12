@@ -1,28 +1,24 @@
+from .fields import PhoneNumberField
 from rest_framework import serializers
 from .models import *
-import phonenumbers, re
+
+class AuthorNestedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['author_id', 'first_name', 'last_name']
+
+class CategoryNestedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['category_id', 'category']
 
 
 class LibrarySerializer(serializers.ModelSerializer):
     contact_email = serializers.EmailField(required=True)
-
+    phone_number = PhoneNumberField(required=True)
     class Meta:
         model = Library
         fields = '__all__'
-
-    def validate_phone_number(self, value):
-        try:
-            parsed = phonenumbers.parse(value, None)
-        except phonenumbers.NumberParseException:
-            try:
-                parsed = phonenumbers.parse(value, "IN")
-            except phonenumbers.NumberParseException:
-                raise serializers.ValidationError("Could not parse phone number.")
-
-        if not phonenumbers.is_valid_number(parsed):
-            raise serializers.ValidationError("Phone number is not valid.")
-        formatted_number = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)
-        return formatted_number
 
 
 class BookSerializer(serializers.ModelSerializer):
@@ -32,46 +28,53 @@ class BookSerializer(serializers.ModelSerializer):
     categories = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(), many=True, write_only=True, required=False
     )
+    authors_detail = AuthorNestedSerializer(many=True, read_only=True, source='authors')
+    categories_detail = CategoryNestedSerializer(many=True, read_only=True, source='categories')
+
     class Meta:
         model = Book
-        fields = '__all__'
+        fields = [
+            'id', 'title', 'isbn', 'publication_date', 'total_copies', 'available_copies',
+            'library', 'authors', 'categories', 'authors_detail', 'categories_detail',
+            'created_at', 'updated_at'
+        ]
+
+    def _update_m2m(self, instance, field_name, through_model, related_field_name, related_instances):
+        """
+        DRY utility method to clear and recreate many-to-many relationships through an intermediate model.
+        """
+        # Clear existing M2M entries
+        getattr(instance, field_name).clear()
+
+        # Recreate through-model relationships
+        for related_instance in related_instances:
+            kwargs = {'book': instance, related_field_name: related_instance}
+            through_model.objects.create(**kwargs)
+
+    def create(self, validated_data):
+        authors = validated_data.pop('authors', [])
+        categories = validated_data.pop('categories', [])
+        book = Book.objects.create(**validated_data)
+
+        self._update_m2m(book, 'authors', BookAuthor, 'author', authors)
+        self._update_m2m(book, 'categories', BookCategory, 'category', categories)
+
+        return book
 
     def update(self, instance, validated_data):
         authors = validated_data.pop('authors', None)
         categories = validated_data.pop('categories', None)
 
-        # Update regular fields
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
 
-        # Update ManyToMany through relationships
         if authors is not None:
-            instance.authors.clear()
-            for author in authors:
-                BookAuthor.objects.create(book=instance, author=author)
-
+            self._update_m2m(instance, 'authors', BookAuthor, 'author', authors)
         if categories is not None:
-            instance.categories.clear()
-            for category in categories:
-                BookCategory.objects.create(book=instance, category=category)
+            self._update_m2m(instance, 'categories', BookCategory, 'category', categories)
 
         return instance
-
-    def validate_isbn(self, value):
-        isbn = value.replace('-', '').upper()
-        if len(isbn) == 13 and isbn.isdigit():
-            total = sum((int(x) * (1 if i % 2 == 0 else 3)) for i, x in enumerate(isbn))
-            if total % 10 != 0:
-                raise serializers.ValidationError('Invalid ISBN-13 checksum')
-            return isbn
-        elif len(isbn) == 10 and re.match(r'^\d{9}[\dXx]$', isbn):
-            total = sum((10 - i) * (10 if x.upper() == 'X' else int(x)) for i, x in enumerate(isbn))
-            if total % 11 != 0:
-                raise serializers.ValidationError('Invalid ISBN-10 checksum')
-            return isbn
-        else:
-            raise serializers.ValidationError('ISBN must be 10 or 13 digits long')
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -96,6 +99,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class MemberSerializer(serializers.ModelSerializer):
     has_overdue = serializers.SerializerMethodField()
     contact_email = serializers.EmailField(required=True)
+    phone_number = PhoneNumberField(required=True)
 
     class Meta:
         model = Member
@@ -104,19 +108,6 @@ class MemberSerializer(serializers.ModelSerializer):
     def get_has_overdue(self, obj):
         return obj.has_overdue_books()
 
-    def validate_phone_number(self, value):
-        try:
-            parsed = phonenumbers.parse(value, None)
-        except phonenumbers.NumberParseException:
-            try:
-                parsed = phonenumbers.parse(value, "IN")
-            except phonenumbers.NumberParseException:
-                raise serializers.ValidationError("Could not parse phone number.")
-
-        if not phonenumbers.is_valid_number(parsed):
-            raise serializers.ValidationError("Phone number is not valid.")
-        formatted_number = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)
-        return formatted_number
 
 
 class BorrowingSerializer(serializers.ModelSerializer):
@@ -159,3 +150,6 @@ class BookCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = BookCategory
         fields = ['book', 'category']
+
+
+

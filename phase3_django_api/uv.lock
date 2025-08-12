@@ -59,6 +59,24 @@ wheels = [
 ]
 
 [[package]]
+name = "generic"
+version = "1.1.5"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/8b/1c/0df504f8b28f29be98c19762b02978fce8baee596f73f20a0530540401b2/generic-1.1.5.tar.gz", hash = "sha256:0efa62c3a0d141ccd3e53723f35208d5c7590083db7164c810d2cffd0429ae92", size = 8259, upload-time = "2025-07-11T19:54:46.034Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/4c/c9/729ceabda36c103e00b26e32ae0ad1ec22a8f679f989957fbc01cefc05fe/generic-1.1.5-py3-none-any.whl", hash = "sha256:d7b2cafd07542d2ead79d7e878d68bdbcb3c03cbbf359d5b902e9ff69164ccba", size = 9891, upload-time = "2025-07-11T19:54:44.715Z" },
+]
+
+[[package]]
+name = "generics"
+version = "7.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/6d/e2/0141ca0324eb301b88a0970b27658993ad134d7b47c9e8ad2428c6404feb/generics-7.0.0.tar.gz", hash = "sha256:abd5c0fe619f02ee3340bf4b29f90dce9bd7bea88b3e4a369c8c2563014eab9c", size = 4359, upload-time = "2024-04-19T10:25:45.024Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0a/df/400511e2fc8aadc5e2b205fddaeb9798f621b0cccdd9e933e97090e1f24f/generics-7.0.0-py2.py3-none-any.whl", hash = "sha256:ab22c13f2adf4d65402ca448494c9561b762e56316971f6528eada6a82e16619", size = 5401, upload-time = "2024-04-19T10:25:43.908Z" },
+]
+
+[[package]]
 name = "phase3-django-api"
 version = "0.1.0"
 source = { virtual = "." }
@@ -66,6 +84,8 @@ dependencies = [
     { name = "django" },
     { name = "django-filter" },
     { name = "djangorestframework" },
+    { name = "generic" },
+    { name = "generics" },
     { name = "phonenumbers" },
     { name = "pydantic" },
     { name = "pymysql" },
@@ -76,6 +96,8 @@ requires-dist = [
     { name = "django", specifier = ">=5.2.5" },
     { name = "django-filter", specifier = ">=25.1" },
     { name = "djangorestframework", specifier = ">=3.16.0" },
+    { name = "generic", specifier = ">=1.1.5" },
+    { name = "generics", specifier = ">=7.0.0" },
     { name = "phonenumbers", specifier = ">=9.0.11" },
     { name = "pydantic", specifier = ">=2.11.7" },
     { name = "pymysql", specifier = ">=1.1.1" },
