@@ -167,7 +167,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     filterset_class = CategoryFilter
 
     ordering_fields =  '__all__' # all fields allowed for sorting
-    ordering = ['category']  # default ordering
+    ordering = ['category_id']  # default ordering
 
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all()
