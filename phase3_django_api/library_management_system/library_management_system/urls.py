@@ -15,9 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
-from rest_framework import routers
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 class HelloWorldView(APIView):
     def get(self, request):
@@ -26,7 +26,10 @@ class HelloWorldView(APIView):
 urlpatterns = [
 
     path('', HelloWorldView.as_view()),
-    path('api/', include('libraries_database.urls')),
+    path('api/v1/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/v1/docs/', SpectacularSwaggerView.as_view(url_name='schema')),
+    path("api/v1/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
+    path('api/v1/', include('libraries_database.urls')),
 
 
     # Add other API URLs here

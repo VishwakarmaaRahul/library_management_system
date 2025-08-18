@@ -7,6 +7,7 @@ from django.db.models import Avg
 # Create your models here.
 
 class Library (models.Model):
+    objects = None
     library_id = models.AutoField(primary_key=True)
     library_name  = models.CharField(max_length=50,blank=False,null=False)
     campus_location = models.CharField(max_length=50)

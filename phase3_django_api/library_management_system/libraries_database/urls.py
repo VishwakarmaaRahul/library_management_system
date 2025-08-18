@@ -15,7 +15,7 @@ router.register(r'bookcategories', BookCategoryViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
- path('api/members/<int:member_id>/borrowings/', MemberBorrowingHistoryView.as_view(), name='member-borrowings'),
+    path('api/members/<int:member_id>/borrowings/', MemberBorrowingHistoryView.as_view(), name='member-borrowings'),
     path('statistics/', StatisticsView.as_view(), name='library-statistics'),
 
 ]

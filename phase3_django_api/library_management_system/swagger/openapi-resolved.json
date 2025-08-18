@@ -1,0 +1,2360 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Library Management API",
+    "description": "API for managing libraries, books, authors, members, borrowings, and reviews.\nIncludes CRUD, search, filtering, ordering, pagination, and custom actions (borrow/return).\nNo authentication required.\n",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8000/api/v1/"
+    },
+    {
+      "url": "http://localhost:8000/api/v1/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Libraries"
+    },
+    {
+      "name": "Books"
+    },
+    {
+      "name": "Authors"
+    },
+    {
+      "name": "Members"
+    },
+    {
+      "name": "Borrowings"
+    },
+    {
+      "name": "Reviews"
+    },
+    {
+      "name": "Statistics"
+    }
+  ],
+  "paths": {
+    "/libraries/": {
+      "get": {
+        "tags": [
+          "Libraries"
+        ],
+        "summary": "List libraries (paginated, searchable, orderable)",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search by library_name or campus_location.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Tech"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Order results by a field (prefix with \"-\" for descending).",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "library_name",
+                "-library_name",
+                "campus_location",
+                "-campus_location"
+              ]
+            },
+            "example": "library_name"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number (DRF PageNumberPagination).",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "example": 1
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "Results per page.",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of libraries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Libraries"
+        ],
+        "summary": "Create a new library",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Library"
+              },
+              "example": {
+                "library_name": "Tech Library",
+                "campus_location": "East Campus",
+                "contact_email": "techlibrary@university.edu",
+                "phone_number": "9876543210"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Library created"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/libraries/{id}/": {
+      "get": {
+        "tags": [
+          "Libraries"
+        ],
+        "summary": "Retrieve a library by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Library details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Library"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Libraries"
+        ],
+        "summary": "Update a library (replace)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Library"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Library updated"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Libraries"
+        ],
+        "summary": "Delete a library",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Library deleted"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Libraries"
+        ],
+        "summary": "Partially update a library",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Library"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Library updated"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/libraries/{library_id}/book-detail/{book_id}/": {
+      "get": {
+        "tags": [
+          "Libraries",
+          "Books"
+        ],
+        "summary": "Get details about a specific book within a library (incl. average rating)",
+        "parameters": [
+          {
+            "name": "library_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book title and average rating",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/books/": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "List books (paginated, searchable, filterable, orderable)",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search by title or ISBN.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "physics"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Order results by a field (prefix with \"-\" for descending).",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "title",
+                "-title",
+                "publication_date",
+                "-publication_date"
+              ]
+            },
+            "example": "-publication_date"
+          },
+          {
+            "name": "author",
+            "in": "query",
+            "description": "Filter by author ID.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Filter by category ID.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 3
+          },
+          {
+            "name": "library",
+            "in": "query",
+            "description": "Filter by library ID.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 2
+          },
+          {
+            "name": "available_only",
+            "in": "query",
+            "description": "If true, return only books with available copies.",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            },
+            "example": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number.",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "example": 1
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "Results per page.",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of books",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_2"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Create a new book",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              },
+              "example": {
+                "title": "Python Programming",
+                "isbn": "978-0-306-40615-7",
+                "publication_date": "2025-01-15",
+                "library": 2,
+                "author": 1,
+                "category": 1
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Book created"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/{id}/": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Get book details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Book details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Update a book (replace)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book updated"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Delete a book",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Book deleted"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Partially update a book",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              },
+              "example": {
+                "title": "Advanced Python"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Book updated"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/books/{id}/availability/": {
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Check availability for a book",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Availability details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_3"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/books/borrow/": {
+      "post": {
+        "tags": [
+          "Books",
+          "Borrowings"
+        ],
+        "summary": "Borrow a book (creates a borrowing record)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/books_borrow_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Borrowing created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Borrowing"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request (e.g., no copies available)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/return/": {
+      "post": {
+        "tags": [
+          "Books",
+          "Borrowings"
+        ],
+        "summary": "Return a borrowed book",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/books_return_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_4"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Borrowing not found"
+          }
+        }
+      }
+    },
+    "/authors/": {
+      "get": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "List authors (paginated, searchable, orderable)",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search by author first/last name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "Thomas"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Order by first or last name.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "first_name",
+                "-first_name",
+                "last_name",
+                "-last_name"
+              ]
+            },
+            "example": "last_name"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of authors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_5"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Create a new author",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Author"
+              },
+              "example": {
+                "first_name": "John",
+                "last_name": "Doe",
+                "birth_date": "1980-05-15",
+                "nationality": "Indian"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Author created"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/authors/{id}/": {
+      "get": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Retrieve an author",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Author details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Author"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Update an author (replace)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Author"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Author updated"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Delete an author",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Author deleted"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Partially update an author",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Author"
+              },
+              "example": {
+                "biography": "Senior researcher in machine learning and AI."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Author updated"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/members/": {
+      "get": {
+        "tags": [
+          "Members"
+        ],
+        "summary": "List members (paginated, searchable, filterable, orderable)",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search by first_name, last_name, or email.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "alice"
+          },
+          {
+            "name": "member_type",
+            "in": "query",
+            "description": "Filter by member type.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "student",
+                "faculty"
+              ]
+            },
+            "example": "faculty"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "first_name",
+                "-first_name",
+                "last_name",
+                "-last_name"
+              ]
+            },
+            "example": "first_name"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of members",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_6"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Members"
+        ],
+        "summary": "Create a new member",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Member"
+              },
+              "example": {
+                "first_name": "Alice",
+                "last_name": "Johnson",
+                "email": "alice.johnson@example.com",
+                "phone_number": "7778889991",
+                "member_type": "faculty"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Member created"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/members/{id}/": {
+      "get": {
+        "tags": [
+          "Members"
+        ],
+        "summary": "Retrieve a member",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Member details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Member"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Members"
+        ],
+        "summary": "Update a member (replace)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Member"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Member updated"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Members"
+        ],
+        "summary": "Delete a member",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Member deleted"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Members"
+        ],
+        "summary": "Partially update a member",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Member"
+              },
+              "example": {
+                "phone_number": "9000000000"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Member updated"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/borrowings/": {
+      "get": {
+        "tags": [
+          "Borrowings"
+        ],
+        "summary": "List borrowings (paginated, filterable, orderable)",
+        "parameters": [
+          {
+            "name": "member_id",
+            "in": "query",
+            "description": "Filter by member ID.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 5
+          },
+          {
+            "name": "book_id",
+            "in": "query",
+            "description": "Filter by book ID.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 4
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Filter by borrowing status.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "returned"
+              ]
+            },
+            "example": "active"
+          },
+          {
+            "name": "due_date__lt",
+            "in": "query",
+            "description": "Filter borrowings due before a specific date (YYYY-MM-DD).",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2025-08-01"
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "borrow_date",
+                "-borrow_date",
+                "due_date",
+                "-due_date"
+              ]
+            },
+            "example": "-due_date"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of borrowings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_7"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Borrowings"
+        ],
+        "summary": "Create a borrowing record",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Borrowing"
+              },
+              "example": {
+                "member": 1,
+                "book": 4,
+                "borrow_date": "2025-08-13",
+                "due_date": "2025-08-27",
+                "late_fee": 0
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Borrowing created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Borrowing"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/borrowings/{id}/": {
+      "get": {
+        "tags": [
+          "Borrowings"
+        ],
+        "summary": "Retrieve a borrowing record",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Borrowing details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Borrowing"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Borrowings"
+        ],
+        "summary": "Update a borrowing (replace)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Borrowing"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Borrowing updated"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Borrowings"
+        ],
+        "summary": "Delete a borrowing",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Borrowing deleted"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Borrowings"
+        ],
+        "summary": "Partially update a borrowing",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Borrowing"
+              },
+              "example": {
+                "due_date": "2025-09-01"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Borrowing updated"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/borrowings/{id}/return/": {
+      "post": {
+        "tags": [
+          "Borrowings"
+        ],
+        "summary": "Return a borrowed book by borrowing ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_8"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/reviews/": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "List reviews (paginated, filterable, orderable)",
+        "parameters": [
+          {
+            "name": "book_id",
+            "in": "query",
+            "description": "Filter by book ID.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 4
+          },
+          {
+            "name": "member_id",
+            "in": "query",
+            "description": "Filter by member ID.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          },
+          {
+            "name": "rating",
+            "in": "query",
+            "description": "Filter by rating value.",
+            "required": false,
+            "schema": {
+              "maximum": 5,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "example": 5
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "review_date",
+                "-review_date",
+                "rating",
+                "-rating"
+              ]
+            },
+            "example": "-review_date"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of reviews",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_9"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Create a new review",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Review"
+              },
+              "example": {
+                "book": 4,
+                "member": 1,
+                "rating": 5,
+                "review_date": "2025-08-12",
+                "comment": "Very insightful book with practical examples."
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Review created"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reviews/{id}/": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Retrieve a review",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Review"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Update a review (replace)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Review"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Review updated"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Delete a review",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Review deleted"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Partially update a review",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Review"
+              },
+              "example": {
+                "comment": "Updated comment text."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Review updated"
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/statistics/": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "Get library statistics",
+        "description": "Returns summary metrics like total books, members, borrowings, active borrowings, etc.",
+        "responses": {
+          "200": {
+            "description": "Statistics data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_10"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "status_code": {
+            "type": "integer",
+            "example": 400
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "example": {
+          "success": false,
+          "status_code": 400,
+          "errors": {
+            "field_name": [
+              "This field is required."
+            ]
+          }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "success": true,
+          "message": "Operation successful."
+        }
+      },
+      "Paginated": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "example": "http://127.0.0.1:8000/api/v1/books/?page=3"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "Library": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 4
+          },
+          "library_name": {
+            "type": "string",
+            "example": "Tech Library"
+          },
+          "campus_location": {
+            "type": "string",
+            "example": "East Campus"
+          },
+          "contact_email": {
+            "type": "string",
+            "example": "techlibrary@university.edu"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "+919876543210"
+          }
+        }
+      },
+      "Book": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 13
+          },
+          "title": {
+            "type": "string",
+            "example": "Physics for Scientists"
+          },
+          "isbn": {
+            "type": "string",
+            "example": "9780321993724"
+          },
+          "publication_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2013-01-01"
+          },
+          "library": {
+            "type": "integer",
+            "example": 2
+          },
+          "author": {
+            "type": "integer",
+            "example": 1
+          },
+          "category": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+      "Author": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "first_name": {
+            "type": "string",
+            "example": "Thomas"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Cormen"
+          },
+          "birth_date": {
+            "type": "string",
+            "format": "date",
+            "example": "1956-01-01"
+          },
+          "nationality": {
+            "type": "string",
+            "example": "American"
+          }
+        }
+      },
+      "Member": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 2
+          },
+          "first_name": {
+            "type": "string",
+            "example": "Bob"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Lee"
+          },
+          "email": {
+            "type": "string",
+            "example": "bob2@example.com"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "9000000002"
+          },
+          "member_type": {
+            "type": "string",
+            "example": "faculty",
+            "enum": [
+              "student",
+              "faculty"
+            ]
+          }
+        }
+      },
+      "Borrowing": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 15
+          },
+          "member": {
+            "type": "integer",
+            "example": 1
+          },
+          "book": {
+            "type": "integer",
+            "example": 4
+          },
+          "borrow_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2025-08-13"
+          },
+          "due_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2025-08-27"
+          },
+          "return_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "example": null
+          },
+          "late_fee": {
+            "type": "number",
+            "example": 0
+          }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 10
+          },
+          "member": {
+            "type": "integer",
+            "example": 1
+          },
+          "book": {
+            "type": "integer",
+            "example": 4
+          },
+          "rating": {
+            "maximum": 5,
+            "minimum": 1,
+            "type": "integer",
+            "example": 5
+          },
+          "comment": {
+            "type": "string",
+            "example": "Very insightful book with practical examples."
+          },
+          "review_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2025-08-12"
+          }
+        }
+      },
+      "inline_response_200": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Paginated"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Library"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "inline_response_200_1": {
+        "type": "object",
+        "properties": {
+          "book_title": {
+            "type": "string",
+            "example": "A Brief History of Time"
+          },
+          "average_rating": {
+            "type": "number",
+            "example": 4.5
+          }
+        }
+      },
+      "inline_response_200_2": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Paginated"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Book"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "inline_response_200_3": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "A Brief History of Time"
+          },
+          "available_copies": {
+            "type": "integer",
+            "example": 1
+          },
+          "total_copies": {
+            "type": "integer",
+            "example": 2
+          }
+        }
+      },
+      "books_borrow_body": {
+        "required": [
+          "book",
+          "borrow_date",
+          "due_date",
+          "member"
+        ],
+        "type": "object",
+        "properties": {
+          "book": {
+            "type": "integer",
+            "example": 4
+          },
+          "member": {
+            "type": "integer",
+            "example": 3
+          },
+          "borrow_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2025-08-12"
+          },
+          "due_date": {
+            "type": "string",
+            "format": "date",
+            "example": "2025-08-26"
+          }
+        }
+      },
+      "books_return_body": {
+        "required": [
+          "borrowing_id"
+        ],
+        "type": "object",
+        "properties": {
+          "borrowing_id": {
+            "type": "integer",
+            "example": 9
+          }
+        }
+      },
+      "inline_response_200_4": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "late_fee": {
+            "type": "number",
+            "example": 2
+          },
+          "message": {
+            "type": "string",
+            "example": "Book returned. Late fee applied."
+          }
+        }
+      },
+      "inline_response_200_5": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Paginated"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Author"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "inline_response_200_6": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Paginated"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Member"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "inline_response_200_7": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Paginated"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Borrowing"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "inline_response_200_8": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "late_fee": {
+            "type": "number",
+            "example": 1
+          },
+          "message": {
+            "type": "string",
+            "example": "Book returned."
+          }
+        }
+      },
+      "inline_response_200_9": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Paginated"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Review"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "inline_response_200_10": {
+        "type": "object",
+        "properties": {
+          "total_books": {
+            "type": "integer",
+            "example": 120
+          },
+          "total_members": {
+            "type": "integer",
+            "example": 45
+          },
+          "total_borrowings": {
+            "type": "integer",
+            "example": 300
+          },
+          "active_borrowings": {
+            "type": "integer",
+            "example": 15
+          }
+        }
+      }
+    }
+  }
+}

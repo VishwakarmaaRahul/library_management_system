@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # 'books',
     'libraries_database',
     'django_filters',
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -94,7 +95,8 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    'PAGE_SIZE_QUERY_PARAM': 'page_size'
+    'PAGE_SIZE_QUERY_PARAM': 'page_size',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
 }
 

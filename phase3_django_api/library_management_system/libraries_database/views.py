@@ -1,26 +1,14 @@
-
-from urllib import request
-
-from django.shortcuts import render, get_object_or_404
-from rest_framework.response import Response
-from rest_framework.decorators import action
 # Create your views here.
+from django.shortcuts import get_object_or_404
+from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import *
 from rest_framework import viewsets
-from .pagination import CustomPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-
-
-from .models import *
-from .serializers import (
-    LibrarySerializer, BookSerializer, AuthorSerializer, CategorySerializer,
-    MemberSerializer, BorrowingSerializer, ReviewSerializer, BookAuthorSerializer,
-    BookCategorySerializer
-)
+from .serializers import *
 
 class LibraryViewSet(viewsets.ModelViewSet):
     queryset = Library.objects.all()
