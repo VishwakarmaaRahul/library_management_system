@@ -34,9 +34,8 @@ class Book(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 
-
     def average_rating(self):
-        avg = self.review_set.aggregate(Avg('rating'))['rating__avg']
+        avg = self.reviews.aggregate(Avg('rating'))['rating__avg']
         if avg is not None:
             return round(avg, 2)
         return None
@@ -104,18 +103,27 @@ class Member(models.Model):
 
 
 class Borrowing(models.Model):
-    borrowing_id = models.IntegerField(primary_key=True)
-    member = models.ForeignKey(Member,on_delete=models.CASCADE)
-    book = models.ForeignKey(Book,on_delete=models.CASCADE)
-    borrow_date = models.DateField(null=False)
-    due_date = models.DateField(null=False)
+    borrowing_id = models.AutoField(primary_key=True)   # Auto-increment
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    borrow_date = models.DateField()
+    due_date = models.DateField()
     return_date = models.DateField(null=True, blank=True)
-    late_fee = models.DecimalField(max_digits=10, decimal_places=2)
+    late_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def clean(self):
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['member', 'book'],
+                condition=models.Q(return_date__isnull=True),
+                name='unique_active_borrowing_per_member_book'
+            )
+        ]
+
+    def clean(self):
         if self.borrow_date > timezone.now().date():
             raise ValidationError("Borrow date cannot be in the future.")
 
@@ -128,19 +136,27 @@ class Borrowing(models.Model):
         if self.late_fee is not None and self.late_fee < 0:
             raise ValidationError("Late fee cannot be negative.")
 
+        # This check is now "soft validation" (DB will enforce strictly)
         if Borrowing.objects.filter(
-                member=self.member,
-                book=self.book,
-                return_date__isnull=True
+            member=self.member,
+            book=self.book,
+            return_date__isnull=True
         ).exclude(pk=self.pk).exists():
             raise ValidationError("This member already has this book borrowed and not returned.")
+
+    def save(self, *args, **kwargs):
+        # Always run full validation
+        self.full_clean()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"Borrowing {self.borrowing_id} by {self.member}"
+
 
 class Review(models.Model):
     review_id = models.IntegerField(primary_key=True)
     member = models.ForeignKey(Member,on_delete=models.CASCADE)
-    book = models.ForeignKey(Book,on_delete=models.CASCADE)
+    book = models.ForeignKey(Book,on_delete=models.CASCADE,related_name="reviews")
     rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )

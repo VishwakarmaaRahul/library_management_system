@@ -100,6 +100,16 @@ REST_FRAMEWORK = {
 
 }
 
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Library Management API",
+    "DESCRIPTION": "A comprehensive API for managing libraries, books, authors, members, borrowings, and reviews.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SERVERS": [
+        {"url": "http://127.0.0.1:8000", "description": "Local development server"},
+    ],
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 

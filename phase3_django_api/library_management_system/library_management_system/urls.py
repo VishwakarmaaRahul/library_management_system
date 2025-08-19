@@ -19,16 +19,16 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
-class HelloWorldView(APIView):
-    def get(self, request):
-        return Response({"message": "Hello, world!"})
+# class HelloWorldView(APIView):
+#     def get(self, request):
+#         return Response({"message": "Hello, world!"})
 
 urlpatterns = [
 
-    path('', HelloWorldView.as_view()),
+    # path('', HelloWorldView.as_view()),
     path('api/v1/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/v1/docs/', SpectacularSwaggerView.as_view(url_name='schema')),
-    path("api/v1/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
+    path('api/v1/redoc/', SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     path('api/v1/', include('libraries_database.urls')),
 
 
