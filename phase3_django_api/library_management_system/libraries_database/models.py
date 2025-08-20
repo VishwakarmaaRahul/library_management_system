@@ -4,15 +4,14 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Avg
 
-# Create your models here.
 
-class Library (models.Model):
-    objects = None
+# ===================== Library =====================
+class Library(models.Model):
     library_id = models.AutoField(primary_key=True)
-    library_name  = models.CharField(max_length=50,blank=False,null=False)
+    library_name = models.CharField(max_length=50, blank=False, null=False)
     campus_location = models.CharField(max_length=50)
-    contact_email = models.EmailField(max_length=50,unique=True)
-    phone_number = models.CharField(max_length=15,unique=True)
+    contact_email = models.EmailField(max_length=50, unique=True)
+    phone_number = models.CharField(max_length=15, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -20,9 +19,10 @@ class Library (models.Model):
         return self.library_name
 
 
-
+# ===================== Book =====================
 class Book(models.Model):
-    title = models.CharField(max_length=50,blank=False,null=False)
+    book_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=50, blank=False, null=False)
     isbn = models.CharField(max_length=20, unique=True)
     publication_date = models.DateField(null=True, blank=True)
     total_copies = models.PositiveIntegerField(default=1)
@@ -32,7 +32,6 @@ class Book(models.Model):
     categories = models.ManyToManyField('Category', through='BookCategory')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
     def average_rating(self):
         avg = self.reviews.aggregate(Avg('rating'))['rating__avg']
@@ -50,21 +49,25 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+
+# ===================== Author =====================
 class Author(models.Model):
-    author_id = models.IntegerField(primary_key=True)
+    author_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     birth_date = models.DateField()
     nationality = models.CharField(max_length=50)
-    biography = models.TextField(null= True,blank=True)
+    biography = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-class Category (models.Model):
-    category_id = models.IntegerField(primary_key=True)
+
+# ===================== Category =====================
+class Category(models.Model):
+    category_id = models.AutoField(primary_key=True)
     category = models.CharField(max_length=50)
     descriptions = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -74,15 +77,16 @@ class Category (models.Model):
         return self.category
 
 
+# ===================== Member =====================
 class Member(models.Model):
     class MemberType(models.TextChoices):
         STUDENT = 'student', 'Student'
         FACULTY = 'faculty', 'Faculty'
 
-    member = models.IntegerField(primary_key=True)
+    member_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    contact_email = models.EmailField(max_length=50,unique=True)
+    contact_email = models.EmailField(max_length=50, unique=True)
     phone_number = models.CharField(max_length=15)
     member_type = models.CharField(
         max_length=20,
@@ -94,16 +98,18 @@ class Member(models.Model):
 
     def has_overdue_books(self):
         today = timezone.now().date()
-        return (self.borrowing_set.filter(due_date__lt=today,
-                                         return_date__isnull=True).
-                exists())
+        return (
+            self.borrowing_set.filter(due_date__lt=today, return_date__isnull=True)
+            .exists()
+        )
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
 
+# ===================== Borrowing =====================
 class Borrowing(models.Model):
-    borrowing_id = models.AutoField(primary_key=True)   # Auto-increment
+    borrowing_id = models.AutoField(primary_key=True)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     borrow_date = models.DateField()
@@ -112,7 +118,6 @@ class Borrowing(models.Model):
     late_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
     class Meta:
         constraints = [
@@ -136,7 +141,6 @@ class Borrowing(models.Model):
         if self.late_fee is not None and self.late_fee < 0:
             raise ValidationError("Late fee cannot be negative.")
 
-        # This check is now "soft validation" (DB will enforce strictly)
         if Borrowing.objects.filter(
             member=self.member,
             book=self.book,
@@ -145,21 +149,22 @@ class Borrowing(models.Model):
             raise ValidationError("This member already has this book borrowed and not returned.")
 
     def save(self, *args, **kwargs):
-        # Always run full validation
-        self.full_clean()
+        self.full_clean()  # Always run validation
         super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Borrowing {self.borrowing_id} by {self.member}"
 
 
+# ===================== Review =====================
 class Review(models.Model):
-    review_id = models.IntegerField(primary_key=True)
-    member = models.ForeignKey(Member,on_delete=models.CASCADE)
-    book = models.ForeignKey(Book,on_delete=models.CASCADE,related_name="reviews")
+    review_id = models.AutoField(primary_key=True)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="reviews")
     rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
+
     class Meta:
         constraints = [
             models.CheckConstraint(
@@ -174,10 +179,11 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
     def __str__(self):
-        return self.review_id
+        return f"Review {self.review_id} for {self.book}"
 
+
+# ===================== BookAuthor =====================
 class BookAuthor(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -189,6 +195,7 @@ class BookAuthor(models.Model):
         return f"{self.book.title} - {self.author}"
 
 
+# ===================== BookCategory =====================
 class BookCategory(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)

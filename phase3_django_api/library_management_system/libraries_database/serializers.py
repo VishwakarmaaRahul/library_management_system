@@ -213,15 +213,15 @@ class BookSerializer(serializers.ModelSerializer):
         """ Utility method for clearing/recreating M2M relationships. """
         getattr(instance, field_name).clear()
         for related_instance in related_instances:
-            kwargs = {'book': instance, related_field_name: related_instance}
+            kwargs = {'book_id': instance, related_field_name: related_instance}
             through_model.objects.create(**kwargs)
 
     def create(self, validated_data):
         authors = validated_data.pop('authors', [])
         categories = validated_data.pop('categories', [])
         book = Book.objects.create(**validated_data)
-        self._update_m2m(book, 'authors', BookAuthor, 'author', authors)
-        self._update_m2m(book, 'categories', BookCategory, 'category', categories)
+        self._update_m2m(book, 'authors', BookAuthor, 'author_id', authors)
+        self._update_m2m(book, 'categories', BookCategory, 'category_id', categories)
         return book
 
     def update(self, instance, validated_data):
@@ -233,9 +233,9 @@ class BookSerializer(serializers.ModelSerializer):
         instance.save()
 
         if authors is not None:
-            self._update_m2m(instance, 'authors', BookAuthor, 'author', authors)
+            self._update_m2m(instance, 'authors', BookAuthor, 'author_id', authors)
         if categories is not None:
-            self._update_m2m(instance, 'categories', BookCategory, 'category', categories)
+            self._update_m2m(instance, 'categories', BookCategory, 'category_id', categories)
 
         return instance
 
@@ -314,10 +314,10 @@ class ReviewSerializer(serializers.ModelSerializer):
 class BookAuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookAuthor
-        fields = ['book', 'author']
+        fields = ['book_id', 'author_id']
 
 
 class BookCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = BookCategory
-        fields = ['book', 'category']
+        fields = ['book_id', 'category_id']

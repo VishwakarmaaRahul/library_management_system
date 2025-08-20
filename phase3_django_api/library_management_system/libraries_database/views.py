@@ -261,7 +261,7 @@ from drf_spectacular.utils import (
         description="Retrieve a list of libraries.",
         examples=[OpenApiExample(
             "Library list response",
-            value=[{"id": 1, "library_name": "Central Library"}],
+            value=[{"library_id": 1, "library_name": "Central Library"}],
             response_only=True
         )]
     ),
@@ -314,7 +314,7 @@ class BookViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_class = BookFilter
     ordering_fields = '__all__'
-    ordering = ['id']
+    ordering = ['book_id']
     search_fields = ['title', 'authors__first_name', 'authors__last_name', 'categories__category']
 
     @extend_schema(
@@ -329,7 +329,7 @@ class BookViewSet(viewsets.ModelViewSet):
     def availability(self, request, pk=None):
         book = self.get_object()
         return Response({
-            'title': book.title,
+            'book_id': book.book_id,
             'available_copies': book.available_copies,
             'total_copies': book.total_copies
         })
@@ -339,7 +339,7 @@ class BookViewSet(viewsets.ModelViewSet):
         examples=[
             OpenApiExample(
                 "Borrow request",
-                value={"book": 1, "member": 2, "borrow_date": "2025-08-10", "due_date": "2025-08-24"},
+                value={"book_id": 1, "member_id": 2, "borrow_date": "2025-08-10", "due_date": "2025-08-24"},
                 request_only=True,
             ),
             OpenApiExample(
@@ -352,8 +352,8 @@ class BookViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'], url_path='borrow')
     def borrow_book(self, request):
         try:
-            book_id = request.data.get('book')
-            member_id = request.data.get('member')
+            book_id = request.data.get('book_id')
+            member_id = request.data.get('member_id')
             borrow_date = request.data.get('borrow_date')
             due_date = request.data.get('due_date')
 
@@ -421,33 +421,15 @@ class BookViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         description="Get all active borrowings for a member.",
-        responses={200: OpenApiExample(
-            "Active borrowings",
-            value=[{
-                "borrowing_id": 5,
-                "book_id": 1,
-                "book_title": "1984",
-                "borrow_date": "2025-08-10",
-                "due_date": "2025-08-24"
-            }],
-            response_only=True,
-        )}
+        responses={200: BorrowingSerializer(many=True)}
     )
-    @action(detail=False, methods=['get'], url_path='active-borrowings')
-    def active_borrowings(self, request):
-        member_id = request.query_params.get('member')
-        if not member_id:
-            return Response({'error': 'member parameter is required.'}, status=400)
+    @action(detail=True, methods=['get'], url_path='active-borrowings')
+    def active_borrowings(self, request, pk=None):
+        """Get all active borrowings (not returned yet) for a specific member"""
+        borrowings = Borrowing.objects.filter(member_id=pk, return_date__isnull=True)
+        serializer = BorrowingSerializer(borrowings, many=True)
+        return Response(serializer.data, status=200)
 
-        active_borrowings = Borrowing.objects.filter(member_id=member_id, return_date__isnull=True)
-        data = [{
-            'borrowing_id': borrow.borrowing_id,
-            'book_id': borrow.book.id,
-            'book_title': borrow.book.title,
-            'borrow_date': borrow.borrow_date,
-            'due_date': borrow.due_date,
-        } for borrow in active_borrowings]
-        return Response(data, status=200)
 
 
 # -------------------------
@@ -492,13 +474,39 @@ class CategoryViewSet(viewsets.ModelViewSet):
     retrieve=extend_schema(description="Get details of a member."),
     create=extend_schema(description="Register a new member."),
 )
+# class MemberViewSet(viewsets.ModelViewSet):
+#     queryset = Member.objects.all()
+#     serializer_class = MemberSerializer
+#     filter_backends = [DjangoFilterBackend, OrderingFilter]
+#     filterset_class = MemberFilter
+#     ordering_fields = '__all__'
+#     ordering = ['member_id']
+#
+#     @extend_schema(
+#         description="Get borrowing history of a member.",
+#         responses={200: BorrowingSerializer(many=True)}
+#     )
+#     @action(detail=True, methods=['get'], url_path='borrowings')
+#     def borrowings(self, request, pk=None):
+#         member = self.get_object()
+#         qs = Borrowing.objects.filter(member=member)
+#         serializer = BorrowingSerializer(qs, many=True)
+#         return Response(serializer.data)
+#
+#     @action(detail=True, methods=['get'], url_path='active-borrowings')
+#     def active_borrowings(self, request, pk=None):
+#         """Get all active borrowings (not returned yet) for a specific member"""
+#         borrowings = Borrowing.objects.filter(member_id=pk, return_date__isnull=True)
+#         serializer = BorrowingSerializer(borrowings, many=True)
+#         return Response(serializer.data)
+
 class MemberViewSet(viewsets.ModelViewSet):
     queryset = Member.objects.all()
     serializer_class = MemberSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = MemberFilter
     ordering_fields = '__all__'
-    ordering = ['member']
+    ordering = ['member_id']
 
     @extend_schema(
         description="Get borrowing history of a member.",
@@ -511,12 +519,16 @@ class MemberViewSet(viewsets.ModelViewSet):
         serializer = BorrowingSerializer(qs, many=True)
         return Response(serializer.data)
 
+    @extend_schema(
+        description="Get active borrowings (not returned yet) for a member.",
+        responses={200: BorrowingSerializer(many=True)}
+    )
     @action(detail=True, methods=['get'], url_path='active-borrowings')
     def active_borrowings(self, request, pk=None):
-        """Get all active borrowings (not returned yet) for a specific member"""
         borrowings = Borrowing.objects.filter(member_id=pk, return_date__isnull=True)
         serializer = BorrowingSerializer(borrowings, many=True)
         return Response(serializer.data)
+
 
 
 # -------------------------
