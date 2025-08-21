@@ -1,0 +1,34 @@
+name: Django CI
+
+on:
+  push:
+    branches: [ testingModel-serializer ]
+  pull_request:
+    branches: [ testingModel-serializer ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"   # match your local Python version
+
+      - name: Install uv
+        run: |
+          pip install uv
+
+      - name: Install dependencies
+        run: |
+          uv pip install -r requirements.txt --system
+          uv pip install coverage --system
+
+      - name: Run Tests with Coverage
+        run: |
+          coverage run manage.py test --settings=library_management_system.settings.testing
+          coverage report -m
